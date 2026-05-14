@@ -174,36 +174,88 @@
       padding-inline: var(--container-x);
     }
 
-    /* ===== Buttons & links ===== */
+    /* ===== Buttons — Design System v1.0 =====
+       5 variants × 3 sizes. Square edges, all-caps, Figtree, +0.16em tracking.
+       Filled: Navy (primary on light), Green (conversion), Gold (downloads)
+       Outline: Navy (secondary on light), Green (secondary on dark)
+       ============================================ */
     .btn {
       display: inline-flex;
       align-items: center;
-      gap: 0.65rem;
-      padding: 0.95rem 1.5rem;
+      justify-content: center;
+      gap: var(--sp-2);
+      padding: 8px 17px;                       /* DS: LG default */
       font-family: var(--font-body);
-      font-size: var(--text-sm);
-      font-weight: 500;
-      letter-spacing: 0.01em;
-      border-radius: 0;
-      border: 1px solid currentColor;
+      font-size: 0.8125rem;
+      font-weight: 400;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      border-radius: 0;                        /* DS: square edges, no radius */
+      border: 1px solid transparent;
       background: transparent;
-      color: var(--color-ink);
-      transition: background 0.5s cubic-bezier(0.16, 1, 0.3, 1), color 0.4s, transform 0.4s;
-      position: relative;
-      overflow: hidden;
+      color: inherit;
+      cursor: pointer;
+      transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
     }
-    .btn::after {
-      content: "→";
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .btn:hover { background: var(--color-ink); color: var(--color-paper); }
-    .btn:hover::after { transform: translateX(4px); }
-    .btn--filled {
+    .btn--md { padding: 6px 12px; font-size: 0.75rem; }
+    .btn--sm { padding: 5px 9px;  font-size: 0.6875rem; }
+
+    /* Filled — Navy: primary action on light backgrounds */
+    .btn--navy {
       background: var(--color-ink);
-      color: var(--color-paper);
       border-color: var(--color-ink);
+      color: #FFFFFF;
     }
-    .btn--filled:hover { background: var(--color-jade); border-color: var(--color-jade); }
+    .btn--navy:hover {
+      background: var(--color-ink-soft);
+      border-color: var(--color-ink-soft);
+    }
+
+    /* Filled — Green: conversion CTAs ("Book a call") */
+    .btn--green {
+      background: var(--color-jade);
+      border-color: var(--color-jade);
+      color: #FFFFFF;
+    }
+    .btn--green:hover {
+      background: var(--color-jade-deep);
+      border-color: var(--color-jade-deep);
+    }
+
+    /* Filled — Gold: downloads, promotional accents */
+    .btn--gold {
+      background: var(--color-amber);
+      border-color: var(--color-amber);
+      color: var(--color-ink);
+    }
+    .btn--gold:hover {
+      background: var(--color-gold-400);
+      border-color: var(--color-gold-400);
+    }
+
+    /* Outline — Navy on light backgrounds */
+    .btn--outline-navy {
+      background: transparent;
+      border-color: var(--color-ink);
+      color: var(--color-ink);
+    }
+    .btn--outline-navy:hover {
+      background: var(--color-ink-soft);
+      border-color: var(--color-ink-soft);
+      color: #FFFFFF;
+    }
+
+    /* Outline — Green on dark backgrounds */
+    .btn--outline-green {
+      background: transparent;
+      border-color: var(--color-jade);
+      color: var(--color-jade);
+    }
+    .btn--outline-green:hover {
+      background: var(--color-jade);
+      border-color: var(--color-jade);
+      color: #FFFFFF;
+    }
 
     .link-arrow {
       display: inline-flex;
@@ -1575,7 +1627,7 @@
           AGI delivers sophisticated insolvency and restructuring solutions through a senior-led, right-sized team — providing strategic, pragmatic guidance aligned with your objectives, risk profile, and commercial realities.
         </p>
         <div class="hero__cta-block">
-          <a href="#book" class="btn btn--filled">Get clarity on your options</a>
+          <a href="#book" class="btn btn--green">Get clarity on your options</a>
           <small>Complimentary 30-minute discovery call</small>
         </div>
       </aside>
@@ -1953,7 +2005,7 @@
 
       <div class="how__cta-row">
         <p class="text">A practice tailored to the file — not the firm’s convenience.</p>
-        <a href="#all-services" class="btn">Explore our full range of services</a>
+        <a href="#all-services" class="btn btn--outline-navy">Explore our full range of services</a>
       </div>
     </div>
   </section>
@@ -1984,8 +2036,8 @@
       </div>
 
       <div class="why__cta">
-        <a href="#about-more" class="btn" style="color:var(--color-on-ink); border-color: rgba(255,255,255,0.4);">Learn what sets us apart</a>
-        <a href="#book" class="btn btn--filled" style="background:var(--color-jade); border-color:var(--color-jade); color:var(--color-ink);">Book a complimentary discovery call</a>
+        <a href="#about-more" class="btn btn--outline-green">Learn what sets us apart</a>
+        <a href="#book" class="btn btn--green">Book a complimentary discovery call</a>
       </div>
     </div>
   </section>
@@ -2004,7 +2056,7 @@
           <div class="site-footer__cta-card">
             <span class="eyebrow">Discovery Call</span>
             <h3>Speak directly with a Licensed Insolvency Trustee.</h3>
-            <a href="#book" class="btn">Book a complimentary call</a>
+            <a href="#book" class="btn btn--outline-green">Book a complimentary call</a>
           </div>
         </div>
 
