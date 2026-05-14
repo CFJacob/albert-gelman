@@ -190,6 +190,7 @@
       font-weight: 400;
       letter-spacing: 0.16em;
       text-transform: uppercase;
+      white-space: nowrap;                     /* never break label across lines */
       border-radius: 0;                        /* DS: square edges, no radius */
       border: 1px solid transparent;
       background: transparent;
@@ -318,13 +319,13 @@
       align-items: center;
     }
     .site-logo__img {
-      height: 36px;
+      height: 48px;
       width: auto;
       display: block;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.3s ease, height 0.3s ease;
     }
     .site-logo:hover .site-logo__img { opacity: 0.85; }
-    .site-header.is-scrolled .site-logo__img { height: 32px; }
+    .site-header.is-scrolled .site-logo__img { height: 40px; }
 
     .site-nav {
       display: flex;
@@ -381,14 +382,19 @@
     }
     .site-utility__hamburger:hover { border-color: currentColor; }
 
-    @media (max-width: 1100px) {
-      .site-nav { gap: 0.65rem; }
+    @media (max-width: 1200px) {
+      .site-nav { gap: 0.5rem; }
       .site-nav a { font-size: 0.75rem; }
     }
-    @media (max-width: 900px) {
+    @media (max-width: 1024px) {
       .site-nav { display: none; }
+      .site-utility__icon { display: none; }
       .site-utility__cta { display: none; }
       .site-utility__hamburger { display: inline-flex; }
+    }
+    @media (max-width: 480px) {
+      .site-logo__img { height: 40px; }
+      .site-header.is-scrolled .site-logo__img { height: 36px; }
     }
 
     /* ===== Skip-to-content link (a11y, keyboard-only) ===== */
@@ -491,6 +497,22 @@
       align-self: flex-start;
       margin-top: auto;
     }
+    .site-menu__secondary {
+      display: flex;
+      gap: 1.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--color-ash);
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+    }
+    .site-menu__secondary a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--color-ink);
+      transition: color 0.3s;
+    }
+    .site-menu__secondary a:hover { color: var(--color-jade); }
 
     /* ===== Focus polish (a11y) ===== */
     *:focus { outline: none; }
@@ -1715,6 +1737,16 @@
         <a href="#contact"   @click="menuOpen = false"><span class="site-menu__num">07</span>Contact</a>
       </nav>
       <a href="#book" class="btn btn--green site-menu__cta" @click="menuOpen = false">Book a Discovery Call</a>
+      <div class="site-menu__secondary">
+        <a href="search.html" @click="menuOpen = false">
+          <iconify-icon icon="ph:magnifying-glass" width="18"></iconify-icon>
+          Search
+        </a>
+        <a href="https://linkedin.com" @click="menuOpen = false">
+          <iconify-icon icon="ph:linkedin-logo-fill" width="18"></iconify-icon>
+          LinkedIn
+        </a>
+      </div>
     </div>
   </div>
 
