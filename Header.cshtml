@@ -1,0 +1,48 @@
+@*
+  Header.cshtml — Sitefinity widget template
+  -------------------------------------------
+  Sticky site header with scroll-triggered glass state (driven by Alpine).
+  Logo mark uses the inline <symbol id="ag-mark"/> from _Layout.
+
+  Model: AlbertGelman.Web.ViewModels.HeaderViewModel
+*@
+@model AlbertGelman.Web.ViewModels.HeaderViewModel
+
+<header class="site-header" :class="{ 'is-scrolled': scrolled }">
+    <div class="container site-header__inner">
+
+        @* ---------- Brand ---------- *@
+        <a href="@Url.Content("~/")" class="site-logo" aria-label="Albert Gelman Inc. — Home">
+            <svg class="site-logo__mark ag-mark" width="36" height="32" aria-hidden="true">
+                <use href="#ag-mark"/>
+            </svg>
+            <span class="site-logo__type">
+                Albert Gelman
+                <small>Insolvency &amp; Restructuring</small>
+            </span>
+        </a>
+
+        @* ---------- Primary navigation ---------- *@
+        <nav class="site-nav" aria-label="Primary">
+            @foreach (var item in Model.NavItems)
+            {
+                <a href="@item.Url">@item.Label</a>
+            }
+        </nav>
+
+        @* ---------- Utility ---------- *@
+        <div class="site-utility">
+            <button type="button" aria-label="Search the site">
+                <iconify-icon icon="ph:magnifying-glass" width="18"></iconify-icon>
+            </button>
+            @if (!string.IsNullOrEmpty(Model.LinkedInUrl))
+            {
+                <a href="@Model.LinkedInUrl" target="_blank" rel="noopener" aria-label="LinkedIn">
+                    <iconify-icon icon="ph:linkedin-logo" width="18"></iconify-icon>
+                </a>
+            }
+            <a href="@Model.CtaUrl" class="cta">@Model.CtaLabel</a>
+        </div>
+
+    </div>
+</header>

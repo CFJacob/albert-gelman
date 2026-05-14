@@ -1,0 +1,170 @@
+@*
+  _Layout.cshtml
+  --------------
+  Primary Sitefinity v15.4 (.NET Core Renderer) layout for Albert Gelman Inc.
+  Wraps every page with:
+    1. Font preconnects (Fraunces / Inter Tight / JetBrains Mono)
+    2. Bundled app.css (Tailwind v4 + component styles)
+    3. Iconify, GSAP+ScrollTrigger, Alpine.js (all deferred)
+    4. Inline AG triangle SVG <symbol>
+    5. Site header
+    6. @@RenderBody() — page-specific widgets
+    7. Site footer
+    8. Page-level Alpine x-data store (scroll state, testimonial rotation)
+
+  The header and footer are rendered as Sitefinity widgets in production
+  (Header.cshtml / SiteFooter.cshtml) so editors can manage nav + offices
+  from the CMS. Here they're invoked as partials for clarity.
+*@
+@using Progress.Sitefinity.AspNetCore.Mvc.Rendering
+@inject SitefinityContextWrapper SfContext
+
+<!DOCTYPE html>
+<html lang="@(SfContext.GetCurrentCulture() ?? "en")">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title — Albert Gelman Inc.</title>
+    <meta name="description" content="@(ViewBag.MetaDescription ?? "A federally licensed insolvency and restructuring firm providing senior-led, court-ready guidance to individuals, business owners, lenders, and stakeholders across Canada.")" />
+
+    @* Fonts — editorial pairing *@
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@@9..144,300..900,0..100&family=Inter+Tight:wght@@300;400;500;600;700&family=JetBrains+Mono:wght@@400;500&display=swap" rel="stylesheet" />
+
+    @* Compiled Tailwind v4 + component CSS *@
+    <link rel="stylesheet" href="~/ResourcePackages/AlbertGelman/assets/dist/app.css" asp-append-version="true" />
+
+    @* Iconify for icons *@
+    <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js" defer></script>
+
+    @* GSAP for refined motion *@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+
+    @* Alpine.js v3 + intersect plugin *@
+    <script defer src="https://cdn.jsdelivr.net/npm/@@alpinejs/intersect@@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@@3.x.x/dist/cdn.min.js"></script>
+
+    @await RenderSectionAsync("Head", required: false)
+</head>
+<body x-data="agSite()" x-init="init()">
+
+    @* ============================================================
+       Reusable AG triangle <symbol> — referenced via <use href="#ag-mark"/>
+       ============================================================ *@
+    @await Html.PartialAsync("_AGMark")
+
+    @* ============================================================
+       HEADER (rendered as Sitefinity widget in production)
+       ============================================================ *@
+    @await Html.PartialAsync("Header", new AlbertGelman.Web.ViewModels.HeaderViewModel())
+
+    @* ============================================================
+       PAGE CONTENT
+       ============================================================ *@
+    <main id="main-content">
+        @RenderBody()
+    </main>
+
+    @* ============================================================
+       FOOTER (rendered as Sitefinity widget in production)
+       ============================================================ *@
+    @await Html.PartialAsync("SiteFooter", new AlbertGelman.Web.ViewModels.FooterViewModel())
+
+    @* ============================================================
+       Page-level Alpine + GSAP behaviour
+       ============================================================ *@
+    <script>
+        function agSite() {
+            return {
+                scrolled: false,
+                testimonials: @Html.Raw(ViewBag.TestimonialsJson ?? "[]"),
+                init() {
+                    // Sticky-header scroll state
+                    const onScroll = () => { this.scrolled = window.scrollY > 24; };
+                    window.addEventListener('scroll', onScroll, { passive: true });
+                    onScroll();
+
+                    // Auto-rotate testimonials every 8 s
+                    setInterval(() => {
+                        this.$nextTick(() => {
+                            const carousel = document.querySelector('[x-data*="active"]');
+                            if (carousel && carousel.__x) {
+                                const data = carousel.__x.$data;
+                                data.active = (data.active + 1) % data.items.length;
+                            }
+                        });
+                    }, 8000);
+
+                    // Enhance reveals + counters once GSAP loads
+                    this.waitFor(() => window.gsap && window.ScrollTrigger).then(() => {
+                        if (!window.gsap) return;
+                        gsap.registerPlugin(ScrollTrigger);
+
+                        // Section headings — rule draw + word lift
+                        gsap.utils.toArray('.section-head').forEach((head) => {
+                            const tl = gsap.timeline({
+                                scrollTrigger: { trigger: head, start: 'top 80%', once: true }
+                            });
+                            tl.fromTo(head, { '--rule': '0' }, { duration: 1.4, ease: 'expo.out' }, 0);
+                            tl.from(head.querySelectorAll('.section-head__num, .section-head__title'),
+                                { y: 28, opacity: 0, duration: 1, stagger: 0.12, ease: 'expo.out' }, 0.1);
+                        });
+
+                        // Service cards staggered
+                        gsap.utils.toArray('.service').forEach((el, i) => {
+                            gsap.from(el, {
+                                scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+                                y: 32, opacity: 0, duration: 0.9, delay: (i % 3) * 0.08, ease: 'expo.out'
+                            });
+                        });
+
+                        // Fact numbers — counter + lift
+                        gsap.utils.toArray('.fact').forEach((el) => {
+                            const counter = el.querySelector('.counter');
+                            gsap.from(el, {
+                                scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+                                y: 24, opacity: 0, duration: 1, ease: 'expo.out'
+                            });
+                            if (counter) {
+                                const target = parseFloat(counter.dataset.count) || 0;
+                                const isCurrency = counter.textContent.includes('$');
+                                const isComma = target >= 1000;
+                                const obj = { v: 0 };
+                                gsap.to(obj, {
+                                    v: target, duration: 1.6, ease: 'expo.out',
+                                    scrollTrigger: { trigger: el, start: 'top 80%', once: true },
+                                    onUpdate: () => {
+                                        const n = Math.round(obj.v);
+                                        counter.textContent = (isCurrency ? '$' : '') + (isComma ? n.toLocaleString() : n);
+                                    }
+                                });
+                            }
+                        });
+
+                        // Hero mark gentle parallax
+                        gsap.to('.hero__mark', {
+                            y: -60, ease: 'none',
+                            scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1 }
+                        });
+                    });
+                },
+                waitFor(predicate, interval = 50, timeout = 4000) {
+                    return new Promise((resolve) => {
+                        const start = Date.now();
+                        const tick = () => {
+                            if (predicate()) return resolve(true);
+                            if (Date.now() - start > timeout) return resolve(false);
+                            setTimeout(tick, interval);
+                        };
+                        tick();
+                    });
+                }
+            };
+        }
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

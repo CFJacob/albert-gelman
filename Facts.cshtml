@@ -1,0 +1,49 @@
+@*
+  Facts.cshtml — Sitefinity widget template
+  ------------------------------------------
+  Section 05. Seven editorial numerals on a pale mint wash.
+  Each fact uses a 12-col span pattern (4 / 5 / 3, then 4 / 4 / 4)
+  to break grid monotony — see app.css .fact:nth-child rules.
+
+  Numbers animate from 0 → target via GSAP counter (in _Layout).
+  Use .counter span with data-count attribute.
+
+  Model: AlbertGelman.Web.ViewModels.FactsViewModel
+*@
+@model AlbertGelman.Web.ViewModels.FactsViewModel
+
+<section class="facts" aria-labelledby="facts-title">
+    <div class="container">
+
+        @await Html.PartialAsync("_SectionHead", new AlbertGelman.Web.ViewModels.SectionHeadViewModel
+        {
+            Number = "05",
+            Label = "By the Numbers",
+            TitleId = "facts-title",
+            TitleHtml = "A boutique with <em>institutional</em> reach."
+        })
+
+        <div class="facts__grid reveal" x-intersect.once="$el.classList.add('is-visible')">
+
+            @foreach (var fact in Model.Facts)
+            {
+                <div class="fact">
+                    <div class="fact__num">
+                        <span data-count="@fact.NumericTarget" class="counter">@fact.DisplayNumber</span>
+                        @if (!string.IsNullOrEmpty(fact.Unit))
+                        {
+                            <span class="unit">@fact.Unit</span>
+                        }
+                        @if (!string.IsNullOrEmpty(fact.Superscript))
+                        {
+                            <sup>@fact.Superscript</sup>
+                        }
+                    </div>
+                    <div class="fact__meta">@fact.Meta</div>
+                    <p class="fact__label">@Html.Raw(fact.LabelHtml)</p>
+                </div>
+            }
+
+        </div>
+    </div>
+</section>

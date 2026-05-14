@@ -1,0 +1,55 @@
+@*
+  Index.cshtml — Home page assembly
+  ----------------------------------
+  Demonstrates how the section partials compose into the homepage.
+  In production, each section partial is registered as a Sitefinity
+  widget so editors can drag/drop/reorder them in the page editor.
+
+  ViewBag.Title and TestimonialsJson are read by _Layout.
+*@
+@{
+    Layout = "_Layout";
+    ViewBag.Title = "Senior Judgment. Right-Sized Support.";
+
+    // Testimonials are passed into _Layout's agSite() Alpine data root
+    // as JSON, so the WhoWeAre testimonial slider can bind to them.
+    ViewBag.TestimonialsJson = Newtonsoft.Json.JsonConvert.SerializeObject(new[]
+    {
+        new {
+            quote  = "The team at AGI visited our offices and shared a great presentation with our group. We're now better equipped to advise our clients when they encounter a personal or corporate insolvency situation.",
+            author = "Senior Partner",
+            role   = "Bay Street Law Firm"
+        },
+        new {
+            quote  = "Responsive, decisive, and unfailingly professional. AGI is the trustee we call when we need a process that holds up to scrutiny — and a partner that respects our timelines.",
+            author = "Director, Special Loans",
+            role   = "Schedule I Bank"
+        },
+        new {
+            quote  = "The clearest advice we've had on a complex restructuring. Bryan and his team moved decisively, kept stakeholders aligned, and gave us back operating room.",
+            author = "CFO",
+            role   = "Ontario-based Manufacturer"
+        }
+    });
+}
+
+@* ===== 01 Hero ===== *@
+@await Html.PartialAsync("Hero", new AlbertGelman.Web.ViewModels.HeroViewModel())
+
+@* ===== 02 Who We Are ===== *@
+@await Html.PartialAsync("WhoWeAre", new AlbertGelman.Web.ViewModels.WhoWeAreViewModel())
+
+@* ===== 03 People ===== *@
+@await Html.PartialAsync("People", new AlbertGelman.Web.ViewModels.PeopleViewModel())
+
+@* ===== 04 Who We Serve ===== *@
+@await Html.PartialAsync("WhoWeServe", new AlbertGelman.Web.ViewModels.WhoWeServeViewModel())
+
+@* ===== 05 Facts ===== *@
+@await Html.PartialAsync("Facts", new AlbertGelman.Web.ViewModels.FactsViewModel())
+
+@* ===== 06 How We Help ===== *@
+@await Html.PartialAsync("HowWeHelp", new AlbertGelman.Web.ViewModels.HowWeHelpViewModel())
+
+@* ===== 07 Why AGI ===== *@
+@await Html.PartialAsync("WhyAGI", new AlbertGelman.Web.ViewModels.WhyAGIViewModel())

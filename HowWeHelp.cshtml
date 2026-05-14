@@ -1,0 +1,52 @@
+@*
+  HowWeHelp.cshtml — Sitefinity widget template
+  ----------------------------------------------
+  Section 06. Type-as-architecture title block:
+    • Left  → oversized "06" with small "How We Help" label
+    • Right → italic statement + supporting prose
+  Below: 3×2 service grid with hairline dividers (cream hover state).
+
+  Service numbers use A · 01, B · 04, C · 06 categorisation
+  (A = corporate, B = personal, C = specialty).
+
+  Model: AlbertGelman.Web.ViewModels.HowWeHelpViewModel
+*@
+@model AlbertGelman.Web.ViewModels.HowWeHelpViewModel
+
+<section class="how" id="services" aria-labelledby="how-title">
+    <div class="container">
+
+        @* ---------- Title block: type-as-architecture ---------- *@
+        <div class="how__title-block">
+
+            <h2 id="how-title" class="how__big-num display-soft">
+                06<span>How We Help</span>
+            </h2>
+
+            <div class="how__intro">
+                <h2>@Html.Raw(Model.IntroTitleHtml)</h2>
+                <p>@Html.Raw(Model.IntroBody)</p>
+            </div>
+        </div>
+
+        @* ---------- Service grid (3×2) ---------- *@
+        <div class="how__services">
+            @foreach (var service in Model.Services)
+            {
+                <article class="service reveal" x-intersect.once="$el.classList.add('is-visible')">
+                    <span class="service__num">@service.Number</span>
+                    <h3 class="service__title">@Html.Raw(service.Title)</h3>
+                    <p class="service__body">@Html.Raw(service.Body)</p>
+                    <a href="@service.LinkUrl" class="service__link">Learn more</a>
+                </article>
+            }
+        </div>
+
+        @* ---------- CTA row ---------- *@
+        <div class="how__cta-row">
+            <p class="text">@Html.Raw(Model.CtaTagline)</p>
+            <a href="@Model.CtaUrl" class="btn">@Model.CtaLabel</a>
+        </div>
+
+    </div>
+</section>

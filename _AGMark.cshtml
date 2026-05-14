@@ -1,0 +1,27 @@
+@*
+  _AGMark.cshtml
+  --------------
+  Shared inline SVG <symbol> defining the AG triangle mark.
+  Render ONCE per page (in _Layout.cshtml just inside <body>),
+  then reference anywhere via:
+
+      <svg class="ag-mark" width="36" height="32" aria-hidden="true">
+          <use href="#ag-mark"/>
+      </svg>
+
+  Optional modifier classes:
+    .ag-mark--reverse  → reversed for dark backgrounds
+    .ag-mark--mono     → single-colour, inherits currentColor
+*@
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none;" aria-hidden="true">
+    <symbol id="ag-mark" viewBox="0 0 100 90">
+        @* Outer A frame (with inner triangle cutout via even-odd) *@
+        <path class="frame" fill-rule="evenodd" d="M50 2 L98 88 L2 88 Z M50 18 L86 82 L14 82 Z"/>
+        @* Cross-bar of the A *@
+        <path class="frame" d="M30 66 L70 66 L62 52 L38 52 Z"/>
+        @* Inner green wedge — a stylized 'G' *@
+        <path class="wedge" d="M50 38 L84 88 L16 88 Z"/>
+        @* White slot through the wedge *@
+        <path class="slot" d="M28 80 L72 80 L72 84 L28 84 Z"/>
+    </symbol>
+</svg>

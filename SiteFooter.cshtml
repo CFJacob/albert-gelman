@@ -1,0 +1,102 @@
+@*
+  SiteFooter.cshtml — Sitefinity widget template
+  -----------------------------------------------
+  Site-wide footer. Three-zone layout:
+    1. Top: 5/7 grid — brand + discovery CTA card | offices grid + nav cols
+    2. Bottom: copyright | legal links | social
+
+  Office data, nav columns, and legal links come from Sitefinity content
+  modules so editors can update from the CMS.
+
+  Model: AlbertGelman.Web.ViewModels.FooterViewModel
+*@
+@model AlbertGelman.Web.ViewModels.FooterViewModel
+
+<footer class="site-footer" id="contact">
+    <div class="container">
+
+        @* ---------- Top zone ---------- *@
+        <div class="site-footer__top">
+
+            @* Brand + Discovery CTA *@
+            <div class="site-footer__brand">
+                <a href="@Url.Content("~/")" aria-label="Albert Gelman Inc. home">
+                    <img src="@Model.LogoSrc"
+                         alt="Albert Gelman Inc."
+                         class="site-footer__logo"
+                         width="220"
+                         height="68"
+                         loading="lazy" />
+                </a>
+                <div class="site-footer__cta-card">
+                    <span class="eyebrow">Discovery Call</span>
+                    <h3>@Model.CtaCardHeadline</h3>
+                    <a href="@Model.CtaCardUrl" class="btn">@Model.CtaCardLabel</a>
+                </div>
+            </div>
+
+            @* Offices + Nav columns *@
+            <div>
+                <div class="site-footer__offices">
+                    @foreach (var office in Model.Offices)
+                    {
+                        <div class="office">
+                            <h4>
+                                @office.City
+                                @if (!string.IsNullOrEmpty(office.Tag))
+                                {
+                                    <span>@office.Tag</span>
+                                }
+                            </h4>
+                            <address>@Html.Raw(office.AddressHtml)</address>
+                            @if (!string.IsNullOrEmpty(office.Phone))
+                            {
+                                <a href="tel:@office.Phone.Replace(" ", "").Replace("+", "")">@office.Phone</a>
+                            }
+                            @if (!string.IsNullOrEmpty(office.Email))
+                            {
+                                <a href="mailto:@office.Email">@office.Email</a>
+                            }
+                        </div>
+                    }
+                </div>
+
+                <div class="site-footer__nav">
+                    @foreach (var col in Model.NavColumns)
+                    {
+                        <div class="footer-col">
+                            <h5>@col.Heading</h5>
+                            <ul>
+                                @foreach (var link in col.Links)
+                                {
+                                    <li><a href="@link.Url">@link.Label</a></li>
+                                }
+                            </ul>
+                        </div>
+                    }
+                </div>
+            </div>
+
+        </div>
+
+        @* ---------- Bottom zone ---------- *@
+        <div class="site-footer__bottom">
+            <div>© @Model.CopyrightStart–@DateTime.UtcNow.Year Albert Gelman Inc. All rights reserved.</div>
+            <div class="site-footer__legal">
+                @foreach (var link in Model.LegalLinks)
+                {
+                    <a href="@link.Url">@link.Label</a>
+                }
+            </div>
+            <div class="site-footer__social">
+                @if (!string.IsNullOrEmpty(Model.LinkedInUrl))
+                {
+                    <a href="@Model.LinkedInUrl" target="_blank" rel="noopener" aria-label="LinkedIn">
+                        <iconify-icon icon="ph:linkedin-logo" width="16"></iconify-icon>
+                    </a>
+                }
+            </div>
+        </div>
+
+    </div>
+</footer>

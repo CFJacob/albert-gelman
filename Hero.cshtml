@@ -1,0 +1,61 @@
+@*
+  Hero.cshtml — Sitefinity widget template
+  -----------------------------------------
+  Hero / Editorial cover. Asymmetric 8/4 grid, decorative AG mark bleed,
+  mono eyebrow meta row, italicized accent inside H1.
+
+  Model: AlbertGelman.Web.ViewModels.HeroViewModel
+*@
+@model AlbertGelman.Web.ViewModels.HeroViewModel
+
+<section class="hero" aria-labelledby="hero-title">
+
+    @* Decorative AG triangle — parallaxes on scroll *@
+    <svg class="hero__mark ag-mark" viewBox="0 0 100 90" aria-hidden="true">
+        <use href="#ag-mark"/>
+    </svg>
+
+    <div class="hero__inner">
+
+        @* ---------- Eyebrow meta row ---------- *@
+        <div class="hero__eyebrow-row">
+            <div class="meta">
+                <strong>@Model.EyebrowLeftStrong</strong>
+                @Model.EyebrowLeftSub
+            </div>
+            <div class="meta" style="text-align:right;">
+                <strong>@Model.EyebrowRightStrong</strong>
+                @Model.EyebrowRightSub
+            </div>
+        </div>
+
+        @* ---------- Hairline rule with green accent ---------- *@
+        <div class="hero__rule"></div>
+
+        @* ---------- Headline ----------
+           Renders Model.HeadlineLines as separate <span class="line"> blocks.
+           Lines may contain <em>...</em> for the jade-deep italic accent.
+        *@
+        <h1 id="hero-title" class="hero__headline display-soft">
+            @foreach (var line in Model.HeadlineLines)
+            {
+                <span class="line"><span>@Html.Raw(line)</span></span>
+            }
+        </h1>
+
+        @* ---------- Supporting prose + CTA ---------- *@
+        <aside class="hero__side">
+            <p>@Html.Raw(Model.SupportingCopy)</p>
+            <div class="hero__cta-block">
+                <a href="@Model.CtaUrl" class="btn btn--filled">@Model.CtaLabel</a>
+                <small>@Model.CtaFootnote</small>
+            </div>
+        </aside>
+
+    </div>
+
+    @* ---------- Scroll cue ---------- *@
+    <div class="hero__scroll-cue" aria-hidden="true">
+        <span>Scroll</span>
+    </div>
+</section>

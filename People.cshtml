@@ -1,0 +1,57 @@
+@*
+  People.cshtml — Sitefinity widget template
+  -------------------------------------------
+  Section 03. Horizontal scrolling rail on ink (navy) background.
+  Each person renders as a monogram portrait card (until real photos arrive).
+  Scroll-snap mandatory; touch-friendly; CSS-only scrollbar styling.
+
+  Model: AlbertGelman.Web.ViewModels.PeopleViewModel
+*@
+@model AlbertGelman.Web.ViewModels.PeopleViewModel
+
+<section class="people" aria-labelledby="people-title">
+    <div class="container">
+
+        @await Html.PartialAsync("_SectionHead", new AlbertGelman.Web.ViewModels.SectionHeadViewModel
+        {
+            Number = "03",
+            Label = "Our People",
+            TitleId = "people-title",
+            TitleHtml = "Senior <em>access.</em><br/>From the first call."
+        })
+
+        <div class="people__intro">
+            <p>@Html.Raw(Model.Intro)</p>
+        </div>
+    </div>
+
+    @* Horizontal rail. Bleeds to viewport edges on small screens
+       via negative margin-inline trick in CSS. *@
+    <div class="container">
+        <div class="people__rail">
+
+            @foreach (var p in Model.People)
+            {
+                <article class="person">
+                    <div class="person__portrait">
+                        <span class="person__monogram">@p.Monogram</span>
+                        <div class="person__role-tag">
+                            <span>@p.Credentials</span>
+                            <strong>@p.RoleTagSuffix</strong>
+                        </div>
+                    </div>
+                    <div class="person__meta">
+                        <h3 class="person__name">@p.Name</h3>
+                        <p class="person__title">@p.Title</p>
+                    </div>
+                </article>
+            }
+
+        </div>
+
+        <div class="people__hint">
+            <span></span>
+            <span>@Model.ScrollHint</span>
+        </div>
+    </div>
+</section>

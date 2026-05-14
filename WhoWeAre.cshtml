@@ -1,0 +1,93 @@
+@*
+  WhoWeAre.cshtml — Sitefinity widget template
+  ---------------------------------------------
+  Section 02. Combines:
+    • 3/9 SectionHead
+    • 5/7 body grid: monogram portrait card + lead/paragraphs/link-arrow
+    • Inset testimonial slider on ink background (Alpine-driven)
+
+  Model: AlbertGelman.Web.ViewModels.WhoWeAreViewModel
+*@
+@model AlbertGelman.Web.ViewModels.WhoWeAreViewModel
+
+<section class="who" id="about" aria-labelledby="who-title">
+    <div class="container">
+
+        @await Html.PartialAsync("_SectionHead", new AlbertGelman.Web.ViewModels.SectionHeadViewModel
+        {
+            Number = "02",
+            Label = "The Firm",
+            TitleId = "who-title",
+            TitleHtml = "Who <em>we are.</em>"
+        })
+
+        @* ---------- Body grid: 5/7 ---------- *@
+        <div class="who__body reveal" x-intersect.once="$el.classList.add('is-visible')">
+
+            <figure class="who__portrait" aria-hidden="true">
+                <div class="who__portrait-mono">@Model.PortraitMonogram</div>
+                <div class="who__portrait-meta">
+                    <span>@Model.PortraitLocation</span>
+                    <strong>@Model.PortraitTenure</strong>
+                </div>
+            </figure>
+
+            <div class="who__copy">
+                <p class="who__lead">@Html.Raw(Model.LeadHtml)</p>
+
+                <div class="who__paragraphs">
+                    @foreach (var p in Model.Paragraphs)
+                    {
+                        <p>@Html.Raw(p)</p>
+                    }
+                </div>
+
+                <a href="@Model.MoreUrl" class="link-arrow">@Model.MoreLabel</a>
+            </div>
+        </div>
+
+        @* ---------- Testimonial slider ----------
+           Alpine reads testimonials from agSite() x-data root scope.
+           Auto-rotates every 8s (handled in _Layout setInterval).
+        *@
+        <div class="testimonial reveal"
+             x-intersect.once="$el.classList.add('is-visible')"
+             x-data="{ active: 0, items: testimonials }">
+
+            <div class="testimonial__label">
+                @Model.TestimonialsLabel
+                <div style="margin-top:0.5rem; color:var(--color-jade);"
+                     x-text="String(active + 1).padStart(2,'0') + ' / ' + String(items.length).padStart(2,'0')"></div>
+            </div>
+
+            <div>
+                <template x-for="(t, i) in items" :key="i">
+                    <div x-show="active === i"
+                         x-transition:enter="transition ease-out duration-700"
+                         x-transition:enter-start="opacity-0"
+                         x-transition:enter-end="opacity-100">
+                        <blockquote class="testimonial__quote" x-text="t.quote"></blockquote>
+                        <div class="testimonial__attribution">
+                            <strong x-text="t.author"></strong>
+                            <span style="color:var(--color-ash);">·</span>
+                            <span x-text="t.role"></span>
+                        </div>
+                    </div>
+                </template>
+
+                <div class="testimonial__nav">
+                    <button type="button" aria-label="Previous testimonial"
+                            @@click="active = (active - 1 + items.length) % items.length">
+                        <iconify-icon icon="ph:arrow-left" width="16"></iconify-icon>
+                    </button>
+                    <button type="button" aria-label="Next testimonial"
+                            @@click="active = (active + 1) % items.length">
+                        <iconify-icon icon="ph:arrow-right" width="16"></iconify-icon>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>

@@ -1,0 +1,42 @@
+@*
+  WhoWeServe.cshtml — Sitefinity widget template
+  -----------------------------------------------
+  Section 04. Asymmetric audience grid:
+    • Card 1 spans tall (1/1 → 1/3)        — Individuals & Self-Employed
+    • Cards 2,3 stack in right column     — Businesses, Lenders
+    • Cards 4,5 split bottom row          — Lawyers/Accountants, Advisory
+  On hover each card flips to ink/jade and lifts the green-blur halo.
+
+  Model: AlbertGelman.Web.ViewModels.WhoWeServeViewModel
+*@
+@model AlbertGelman.Web.ViewModels.WhoWeServeViewModel
+
+<section class="serve" id="serve" aria-labelledby="serve-title">
+    <div class="container">
+
+        @await Html.PartialAsync("_SectionHead", new AlbertGelman.Web.ViewModels.SectionHeadViewModel
+        {
+            Number = "04",
+            Label = "Who We Serve",
+            TitleId = "serve-title",
+            TitleHtml = "Five audiences.<br/>One <em>standard of care.</em>"
+        })
+
+        <p class="serve__intro" style="display:block; margin-bottom: clamp(2rem, 4vw, 3rem); max-width: 60ch;">
+            @Html.Raw(Model.Intro)
+        </p>
+
+        <div class="serve__grid">
+            @foreach (var card in Model.Cards)
+            {
+                <article class="serve-card reveal" x-intersect.once="$el.classList.add('is-visible')">
+                    <span class="serve-card__num">@card.Number</span>
+                    <h3 class="serve-card__title">@Html.Raw(card.TitleHtml)</h3>
+                    <p class="serve-card__body">@Html.Raw(card.Body)</p>
+                    <a href="@card.LinkUrl" class="link-arrow serve-card__cta">@card.LinkLabel</a>
+                </article>
+            }
+        </div>
+
+    </div>
+</section>

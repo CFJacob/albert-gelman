@@ -1,0 +1,18 @@
+@*
+  _SectionHead.cshtml
+  -------------------
+  Reusable 3/9 asymmetric section header.
+  Used by Who We Are, People, Who We Serve, Facts, Why AGI.
+
+  Model: AlbertGelman.Web.ViewModels.SectionHeadViewModel
+*@
+@model AlbertGelman.Web.ViewModels.SectionHeadViewModel
+
+<div class="section-head">
+    <div class="section-head__num">
+        <strong>@Model.Number</strong>@Model.Label
+    </div>
+    <h2 id="@Model.TitleId" class="section-head__title">
+        @Html.Raw(Model.TitleHtml)
+    </h2>
+</div>

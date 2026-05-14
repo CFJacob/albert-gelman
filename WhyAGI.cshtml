@@ -1,0 +1,55 @@
+@*
+  WhyAGI.cshtml — Sitefinity widget template
+  -------------------------------------------
+  Section 07. Closing brand statement on the ink (navy) background.
+  Layout: 6/6 grid — left holds the italic statement,
+  right holds an enumerated "what to expect" list with jade-coloured indices.
+  A bleed-right AG triangle (jade @18%) anchors the top-right corner.
+
+  Model: AlbertGelman.Web.ViewModels.WhyAGIViewModel
+*@
+@model AlbertGelman.Web.ViewModels.WhyAGIViewModel
+
+<section class="why" id="why" aria-labelledby="why-title">
+    <div class="container why__inner">
+
+        @await Html.PartialAsync("_SectionHead", new AlbertGelman.Web.ViewModels.SectionHeadViewModel
+        {
+            Number = "07",
+            Label = "Why AGI",
+            TitleId = "why-title",
+            TitleHtml = "Why <em>Albert Gelman Inc.?</em>"
+        })
+
+        <div class="why__body reveal" x-intersect.once="$el.classList.add('is-visible')">
+
+            <p class="why__statement">
+                @Html.Raw(Model.Statement)
+            </p>
+
+            <ul class="why__expect">
+                @{ var idx = 1; }
+                @foreach (var point in Model.Points)
+                {
+                    <li>
+                        <span class="idx">@idx.ToString("00")</span>
+                        <span>@Html.Raw(point)</span>
+                    </li>
+                    idx++;
+                }
+            </ul>
+        </div>
+
+        <div class="why__cta">
+            <a href="@Model.SecondaryCtaUrl" class="btn"
+               style="color:var(--color-on-ink); border-color: rgba(255,255,255,0.4);">
+                @Model.SecondaryCtaLabel
+            </a>
+            <a href="@Model.PrimaryCtaUrl" class="btn btn--filled"
+               style="background:var(--color-jade); border-color:var(--color-jade); color:var(--color-ink);">
+                @Model.PrimaryCtaLabel
+            </a>
+        </div>
+
+    </div>
+</section>
