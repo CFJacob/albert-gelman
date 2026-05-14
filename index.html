@@ -316,39 +316,27 @@
     .site-logo {
       display: inline-flex;
       align-items: center;
-      gap: 0.7rem;
     }
-    .site-logo__mark {
-      width: 36px;
+    .site-logo__img {
       height: 36px;
-      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .site-logo:hover .site-logo__mark { transform: rotate(-8deg) scale(1.06); }
-    .site-logo__type {
-      font-family: var(--font-display);
-      font-size: 1.05rem;
-      font-weight: 500;
-      letter-spacing: 0.04em;
-      line-height: 1;
-    }
-    .site-logo__type small {
+      width: auto;
       display: block;
-      font-family: var(--font-mono);
-      font-size: 0.55rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--color-on-paper-mute);
-      margin-top: 0.25rem;
+      transition: opacity 0.3s ease;
     }
+    .site-logo:hover .site-logo__img { opacity: 0.85; }
+    .site-header.is-scrolled .site-logo__img { height: 32px; }
+
     .site-nav {
       display: flex;
       justify-content: center;
-      gap: clamp(1rem, 2vw, 2rem);
+      gap: clamp(0.75rem, 1.4vw, 1.4rem);
     }
     .site-nav a {
-      font-size: 0.875rem;
+      font-family: var(--font-body);
+      font-size: 0.8125rem;
       font-weight: 500;
       letter-spacing: 0.01em;
+      white-space: nowrap;
       position: relative;
       padding-block: 0.4rem;
     }
@@ -364,39 +352,29 @@
     .site-utility {
       display: inline-flex;
       align-items: center;
-      gap: 1rem;
+      gap: 0.5rem;
     }
-    .site-utility button, .site-utility a {
+    .site-utility button, .site-utility > a:not(.btn) {
       width: 34px;
       height: 34px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       border: 1px solid transparent;
-      border-radius: 999px;
       background: transparent;
       color: inherit;
       transition: border-color 0.3s, background 0.3s;
     }
-    .site-utility button:hover, .site-utility a:hover {
+    .site-utility button:hover, .site-utility > a:not(.btn):hover {
       border-color: currentColor;
     }
-    .site-utility .cta {
-      width: auto;
-      height: auto;
-      padding: 0.55rem 1.1rem;
-      border: 1px solid currentColor;
-      border-radius: 999px;
-      font-size: 0.78rem;
-      font-weight: 500;
-      letter-spacing: 0.02em;
-      transition: background 0.4s, color 0.4s;
-    }
-    .site-utility .cta:hover { background: var(--color-ink); color: var(--color-paper); }
 
+    @media (max-width: 1100px) {
+      .site-nav { gap: 0.65rem; }
+      .site-nav a { font-size: 0.75rem; }
+    }
     @media (max-width: 900px) {
       .site-nav { display: none; }
-      .site-utility .cta span { display: none; }
     }
 
     /* ============================================
@@ -1562,33 +1540,27 @@
   <header class="site-header" :class="{ 'is-scrolled': scrolled }">
     <div class="container site-header__inner">
       <a href="#" class="site-logo" aria-label="Albert Gelman Inc. — Home">
-        <svg class="site-logo__mark ag-mark" width="36" height="32" aria-hidden="true">
-          <use href="#ag-mark"/>
-        </svg>
-        <span class="site-logo__type">
-          Albert Gelman
-          <small>Insolvency &amp; Restructuring</small>
-        </span>
+        <img src="assets/AG_Logo_rgb.webp" alt="Albert Gelman Inc." class="site-logo__img" />
       </a>
 
       <nav class="site-nav" aria-label="Primary">
-        <a href="#about">About Us</a>
+        <a href="#about">About</a>
         <a href="#services">Services</a>
         <a href="#serve">Who We Serve</a>
-        <a href="#insights">News &amp; Insights</a>
-        <a href="#documents">Insolvency Documents</a>
+        <a href="#insights">News</a>
+        <a href="#documents">Documents</a>
         <a href="#careers">Careers</a>
         <a href="#contact">Contact</a>
       </nav>
 
       <div class="site-utility">
         <button type="button" aria-label="Search the site">
-          <iconify-icon icon="ph:magnifying-glass" width="18"></iconify-icon>
+          <iconify-icon icon="ph:magnifying-glass" width="20"></iconify-icon>
         </button>
         <a href="https://linkedin.com" aria-label="LinkedIn">
-          <iconify-icon icon="ph:linkedin-logo" width="18"></iconify-icon>
+          <iconify-icon icon="ph:linkedin-logo-fill" width="20"></iconify-icon>
         </a>
-        <a href="#book" class="cta">Book a Discovery Call</a>
+        <a href="#book" class="btn btn--green btn--md">Book a Discovery Call</a>
       </div>
     </div>
   </header>
@@ -2129,7 +2101,7 @@
         </div>
         <div class="site-footer__social">
           <a href="https://linkedin.com" aria-label="LinkedIn">
-            <iconify-icon icon="ph:linkedin-logo" width="16"></iconify-icon>
+            <iconify-icon icon="ph:linkedin-logo-fill" width="16"></iconify-icon>
           </a>
         </div>
       </div>
