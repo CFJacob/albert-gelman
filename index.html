@@ -354,7 +354,7 @@
       align-items: center;
       gap: 0.5rem;
     }
-    .site-utility button, .site-utility > a:not(.btn) {
+    .site-utility__icon {
       width: 34px;
       height: 34px;
       display: inline-flex;
@@ -365,9 +365,21 @@
       color: inherit;
       transition: border-color 0.3s, background 0.3s;
     }
-    .site-utility button:hover, .site-utility > a:not(.btn):hover {
+    .site-utility__icon:hover {
       border-color: currentColor;
     }
+    .site-utility__hamburger {
+      display: none;
+      width: 34px;
+      height: 34px;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: 1px solid transparent;
+      color: inherit;
+      cursor: pointer;
+    }
+    .site-utility__hamburger:hover { border-color: currentColor; }
 
     @media (max-width: 1100px) {
       .site-nav { gap: 0.65rem; }
@@ -375,6 +387,119 @@
     }
     @media (max-width: 900px) {
       .site-nav { display: none; }
+      .site-utility__cta { display: none; }
+      .site-utility__hamburger { display: inline-flex; }
+    }
+
+    /* ===== Skip-to-content link (a11y, keyboard-only) ===== */
+    .skip-link {
+      position: absolute;
+      top: -100px;
+      left: 1rem;
+      background: var(--color-ink);
+      color: #FFFFFF;
+      padding: 0.65rem 1.1rem;
+      font-family: var(--font-body);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      z-index: 9999;
+      transition: top 0.2s ease;
+    }
+    .skip-link:focus {
+      top: 1rem;
+      outline: 2px solid var(--color-jade);
+      outline-offset: 2px;
+    }
+
+    /* ===== Mobile menu overlay (full-screen editorial) ===== */
+    [x-cloak] { display: none !important; }
+
+    .site-menu {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: var(--color-cream);
+      color: var(--color-ink);
+      overflow-y: auto;
+    }
+    .site-menu__inner {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: clamp(1.5rem, 5vw, 3rem) var(--container-x) clamp(3rem, 8vw, 5rem);
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(2rem, 6vw, 4rem);
+    }
+    .site-menu__top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .site-menu__close {
+      width: 44px;
+      height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: 1px solid var(--color-ash);
+      color: var(--color-ink);
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s;
+    }
+    .site-menu__close:hover {
+      background: var(--color-ink);
+      color: #FFFFFF;
+    }
+    .site-menu__nav {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(0.25rem, 1vw, 0.5rem);
+      flex: 1;
+    }
+    .site-menu__nav a {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: baseline;
+      gap: clamp(1rem, 3vw, 1.75rem);
+      font-family: var(--font-display);
+      font-size: clamp(2.25rem, 8vw, 4.5rem);
+      font-weight: 400;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--color-ink);
+      padding-block: clamp(0.4rem, 1.5vw, 0.7rem);
+      border-bottom: 1px solid var(--color-ash);
+      transition: color 0.3s, padding-left 0.3s ease;
+    }
+    .site-menu__nav a:hover {
+      color: var(--color-jade);
+      padding-left: clamp(0.4rem, 1.5vw, 0.8rem);
+    }
+    .site-menu__num {
+      font-family: var(--font-body);
+      font-size: 0.8125rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: var(--color-jade);
+      align-self: center;
+      padding-top: 0.5em;
+    }
+    .site-menu__cta {
+      align-self: flex-start;
+      margin-top: auto;
+    }
+
+    /* ===== Focus polish (a11y) ===== */
+    *:focus { outline: none; }
+    *:focus-visible {
+      outline: 2px solid var(--color-jade);
+      outline-offset: 2px;
+    }
+    .btn:focus-visible {
+      outline-offset: 3px;
     }
 
     /* ============================================
@@ -1505,6 +1630,9 @@
 
 <body x-data="agSite()" x-init="init()">
 
+  <!-- Skip to main content (a11y, keyboard-only) -->
+  <a class="skip-link" href="#main">Skip to main content</a>
+
   <!-- ============================================================
        REUSABLE AG TRIANGLE MARK (defined once, used via <use>)
        ============================================================ -->
@@ -1544,21 +1672,56 @@
       </nav>
 
       <div class="site-utility">
-        <button type="button" aria-label="Search the site">
+        <a href="search.html" class="site-utility__icon" aria-label="Search the site" title="Search">
           <iconify-icon icon="ph:magnifying-glass" width="20"></iconify-icon>
-        </button>
-        <a href="https://linkedin.com" aria-label="LinkedIn">
+        </a>
+        <a href="https://linkedin.com" class="site-utility__icon" aria-label="LinkedIn">
           <iconify-icon icon="ph:linkedin-logo-fill" width="20"></iconify-icon>
         </a>
-        <a href="#book" class="btn btn--green btn--md">Book a Discovery Call</a>
+        <a href="#book" class="btn btn--green btn--md site-utility__cta">Book a Discovery Call</a>
+        <button type="button" class="site-utility__hamburger" aria-label="Open menu"
+                @click="menuOpen = true" :aria-expanded="menuOpen">
+          <iconify-icon icon="ph:list" width="26"></iconify-icon>
+        </button>
       </div>
     </div>
   </header>
 
   <!-- ============================================================
+       MOBILE MENU OVERLAY (full-screen, editorial)
+       ============================================================ -->
+  <div class="site-menu"
+       x-show="menuOpen"
+       x-transition.opacity.duration.300ms
+       @keydown.escape.window="menuOpen = false"
+       x-cloak
+       role="dialog"
+       aria-modal="true"
+       aria-label="Site navigation">
+    <div class="site-menu__inner">
+      <div class="site-menu__top">
+        <span class="eyebrow">Navigation</span>
+        <button type="button" class="site-menu__close" aria-label="Close menu" @click="menuOpen = false">
+          <iconify-icon icon="ph:x" width="28"></iconify-icon>
+        </button>
+      </div>
+      <nav class="site-menu__nav" aria-label="Primary mobile">
+        <a href="#about"     @click="menuOpen = false"><span class="site-menu__num">01</span>About</a>
+        <a href="#services"  @click="menuOpen = false"><span class="site-menu__num">02</span>Services</a>
+        <a href="#serve"     @click="menuOpen = false"><span class="site-menu__num">03</span>Who We Serve</a>
+        <a href="#insights"  @click="menuOpen = false"><span class="site-menu__num">04</span>News</a>
+        <a href="#documents" @click="menuOpen = false"><span class="site-menu__num">05</span>Documents</a>
+        <a href="#careers"   @click="menuOpen = false"><span class="site-menu__num">06</span>Careers</a>
+        <a href="#contact"   @click="menuOpen = false"><span class="site-menu__num">07</span>Contact</a>
+      </nav>
+      <a href="#book" class="btn btn--green site-menu__cta" @click="menuOpen = false">Book a Discovery Call</a>
+    </div>
+  </div>
+
+  <!-- ============================================================
        HERO
        ============================================================ -->
-  <section class="hero" aria-labelledby="hero-title">
+  <section class="hero" id="main" tabindex="-1" aria-labelledby="hero-title">
 
     <!-- Bleeding decorative triangle -->
     <svg class="hero__mark ag-mark" viewBox="0 0 100 90" aria-hidden="true">
@@ -2105,6 +2268,7 @@
     function agSite() {
       return {
         scrolled: false,
+        menuOpen: false,
         testimonials: [
           {
             quote: "The team at AGI visited our offices and shared a great presentation with our group. We're now better equipped to advise our clients when they encounter a personal or corporate insolvency situation.",
@@ -2127,6 +2291,11 @@
           const onScroll = () => { this.scrolled = window.scrollY > 24; };
           window.addEventListener('scroll', onScroll, { passive: true });
           onScroll();
+
+          // Lock body scroll when mobile menu is open
+          this.$watch('menuOpen', (open) => {
+            document.body.style.overflow = open ? 'hidden' : '';
+          });
 
           // Auto-rotate testimonials
           setInterval(() => {
