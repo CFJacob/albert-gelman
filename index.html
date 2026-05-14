@@ -9,10 +9,12 @@
   <!-- Favicon -->
   <link rel="icon" type="image/webp" href="assets/favicon.webp" />
 
-  <!-- Fonts: editorial pairing -->
+  <!-- Fonts: Design System v1.0 — IvyPresto Display (Adobe Fonts) + Figtree (Google Fonts) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://use.typekit.net" crossorigin />
+  <link rel="stylesheet" href="https://use.typekit.net/abn6izg.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
   <!-- Iconify for icons -->
   <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js" defer></script>
@@ -94,10 +96,10 @@
       --color-on-ink:        oklch(96% 0.005 80);     /* Light text on dark */
       --color-on-ink-mute:   oklch(72% 0.025 230);
 
-      /* --- Typography --- */
-      --font-display: 'Fraunces', 'Times New Roman', Georgia, serif;
-      --font-body:    'Inter Tight', system-ui, -apple-system, sans-serif;
-      --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', monospace;
+      /* --- Typography — Design System v1.0 --- */
+      --font-display: 'ivypresto-display', 'IvyPresto Display', Georgia, 'Times New Roman', serif;
+      --font-body:    'Figtree', 'Arial', system-ui, -apple-system, sans-serif;
+      --font-mono:    var(--font-body);   /* Legacy alias — DS has no mono; eyebrows use overline treatment */
 
       /* --- Fluid scale --- */
       --text-xs:    clamp(0.6875rem, 0.65rem + 0.2vw, 0.75rem);
@@ -149,13 +151,15 @@
     .display { font-family: var(--font-display); font-weight: 400; line-height: 0.96; letter-spacing: -0.025em; }
     .display-soft { font-variation-settings: "opsz" 144, "SOFT" 50; }
     .eyebrow {
-      font-family: var(--font-mono);
+      font-family: var(--font-body);
       font-size: var(--text-xs);
-      font-weight: 500;
+      font-weight: 700;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: var(--color-on-paper-mute);
+      color: var(--color-jade);
     }
+    /* Alias — Design System v1.0 calls this style "Overline" */
+    .overline { font-family: var(--font-body); font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-jade); }
     .eyebrow--ink { color: var(--color-on-ink-mute); }
     .eyebrow--num::before {
       content: attr(data-num) "  —  ";
