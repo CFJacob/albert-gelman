@@ -1324,7 +1324,7 @@
        FOOTER
        ============================================ */
     .site-footer {
-      background: oklch(12% 0.04 264);
+      background: var(--color-ink);
       color: var(--color-on-ink);
       padding-top: clamp(4rem, 8vw, 7rem);
       padding-bottom: 2rem;
@@ -1342,9 +1342,8 @@
       gap: 2rem;
     }
     .site-footer__logo {
-      filter: brightness(0) invert(1);
       width: clamp(180px, 22vw, 260px);
-      opacity: 0.95;
+      display: block;
     }
     .site-footer__cta-card {
       background: rgba(255,255,255,0.04);
@@ -1369,14 +1368,7 @@
       max-width: 22ch;
     }
     .site-footer__cta-card .btn {
-      color: var(--color-on-ink);
-      border-color: rgba(255,255,255,0.4);
       align-self: flex-start;
-    }
-    .site-footer__cta-card .btn:hover {
-      background: var(--color-jade);
-      border-color: var(--color-jade);
-      color: var(--color-ink);
     }
 
     .site-footer__offices {
@@ -1385,15 +1377,15 @@
       gap: 2rem;
     }
     .office h4 {
-      font-family: var(--font-mono);
+      font-family: var(--font-body);
       font-size: var(--text-xs);
-      letter-spacing: 0.2em;
+      font-weight: 700;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--color-jade);
       margin: 0 0 0.75rem;
-      font-weight: 500;
     }
-    .office h4 span { color: var(--color-on-ink-mute); margin-left: 0.4rem; }
+    .office h4 span { color: var(--color-on-ink-mute); margin-left: 0.4rem; font-weight: 500; }
     .office address {
       font-style: normal;
       font-size: var(--text-sm);
@@ -1417,13 +1409,13 @@
       padding-top: clamp(2rem, 4vw, 3rem);
     }
     .footer-col h5 {
-      font-family: var(--font-mono);
+      font-family: var(--font-body);
       font-size: var(--text-xs);
-      letter-spacing: 0.2em;
+      font-weight: 700;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: var(--color-on-ink-mute);
+      color: var(--color-jade);
       margin: 0 0 1rem;
-      font-weight: 500;
     }
     .footer-col ul { list-style: none; padding: 0; margin: 0; }
     .footer-col li { margin-bottom: 0.65rem; }
@@ -1443,10 +1435,9 @@
       margin-top: clamp(3rem, 6vw, 5rem);
       padding-top: 2rem;
       border-top: 1px solid rgba(255,255,255,0.1);
-      font-family: var(--font-mono);
+      font-family: var(--font-body);
       font-size: var(--text-xs);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
+      line-height: 1.55;
       color: var(--color-on-ink-mute);
     }
     .site-footer__legal { display: flex; gap: 1.5rem; flex-wrap: wrap; }
@@ -1462,14 +1453,13 @@
       align-items: center;
       justify-content: center;
       border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 999px;
       color: var(--color-on-ink);
       transition: background 0.3s, border-color 0.3s, color 0.3s;
     }
     .site-footer__social a:hover {
       background: var(--color-jade);
       border-color: var(--color-jade);
-      color: var(--color-ink);
+      color: #FFFFFF;
     }
 
     @media (max-width: 900px) {
@@ -2023,7 +2013,7 @@
       <div class="site-footer__top">
         <div class="site-footer__brand">
           <a href="#" aria-label="Albert Gelman Inc. home">
-            <img src="assets/AG_Logo_rgb.webp" alt="Albert Gelman Inc." class="site-footer__logo" />
+            <img src="assets/AG_Logo_reverse_green-rgb.webp" alt="Albert Gelman Inc." class="site-footer__logo" />
           </a>
           <div class="site-footer__cta-card">
             <span class="eyebrow">Discovery Call</span>
